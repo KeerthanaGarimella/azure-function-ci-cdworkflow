@@ -3,10 +3,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace HelloFunction.Tests
 {
     [TestClass]
-    public class HelloFunctionTest
+    public class UnitTest1
     {
         [TestMethod]
-        public void SampleTest()
+        public void Test1()
         {
             Assert.IsTrue(true);
         }
