@@ -10,15 +10,16 @@ stages:
   jobs:
   - job: BuildJob
     pool:
-      name: default  # This uses your self-hosted agent
+      name: default  # Using self-hosted agent
     steps:
     - task: UseDotNet@2
       inputs:
         packageType: 'sdk'
         version: '6.x'
+
     - script: |
-        dotnet restore HelloFunction/HelloFunction.csproj
-        dotnet build HelloFunction/HelloFunction.csproj --configuration $(buildConfiguration)
+        dotnet restore HelloFunction.csproj
+        dotnet build HelloFunction.csproj --configuration $(buildConfiguration)
       displayName: 'Build Function App'
 
 - stage: Test
@@ -43,7 +44,7 @@ stages:
     steps:
     - task: ArchiveFiles@2
       inputs:
-        rootFolderOrFile: 'HelloFunction/bin/Release/net6.0'
+        rootFolderOrFile: 'bin/Release/net6.0'
         includeRootFolder: false
         archiveType: 'zip'
         archiveFile: '$(Build.ArtifactStagingDirectory)/functionapp.zip'
