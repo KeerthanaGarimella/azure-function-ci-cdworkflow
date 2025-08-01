@@ -1,22 +1,22 @@
-
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.AspNetCore.Http;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
-using System.Threading.Tasks;
 
-namespace HelloFunctionApp
+namespace HelloFunction
 {
-    public static class HelloFunction
+    public class HelloFunction
     {
-        [FunctionName("HelloFunction")]
-        public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
-            ILogger log)
+        [Function("HelloFunction")]
+        public HttpResponseData Run(
+            [HttpTrigger(AuthorizationLevel.Function, "get", "post")] HttpRequestData req,
+            FunctionContext executionContext)
         {
-            log.LogInformation("C# HTTP trigger function processed a request.");
-            return new OkObjectResult("Hello, world!");
+            var logger = executionContext.GetLogger("HelloFunction");
+            logger.LogInformation("C# HTTP trigger function processed a request.");
+
+            var response = req.CreateResponse(System.Net.HttpStatusCode.OK);
+            response.WriteString("Hello from Azure Function!");
+            return response;
         }
     }
 }
