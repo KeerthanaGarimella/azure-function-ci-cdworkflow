@@ -11,12 +11,14 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
-    - name: Setup .NET
+    - name: Setup .NET SDKs
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '8.0.x'
+        dotnet-version: |
+          6.0.x
+          8.0.x
 
     - name: Restore dependencies
       run: dotnet restore HelloFunction/HelloFunction.csproj
