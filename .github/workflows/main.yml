@@ -19,13 +19,13 @@ jobs:
         dotnet-version: '8.0.x'
 
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore HelloFunction/HelloFunction.csproj
 
     - name: Run tests
-      run: dotnet test
+      run: dotnet test HelloFunction.Tests/HelloFunction.Tests.csproj
 
     - name: Publish project
-      run: dotnet publish -c Release -o publish_output
+      run: dotnet publish HelloFunction/HelloFunction.csproj -c Release -o publish_output
 
     - name: Deploy to Azure Function App
       uses: Azure/functions-action@v1
