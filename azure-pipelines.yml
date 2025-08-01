@@ -52,7 +52,7 @@ stages:
 
     - task: AzureFunctionApp@1
       inputs:
-        azureSubscription: 'azure-service-connection'
+        azureSubscription: 'ci-cd'
         appType: 'functionApp'
         appName: 'my-azure-function-demo'
         package: '$(Build.ArtifactStagingDirectory)/functionapp.zip'
