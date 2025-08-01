@@ -1,7 +1,4 @@
-# Trigger fix
 name: Azure Function CI/CD
-...
-
 
 on:
   push:
@@ -13,29 +10,29 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Setup .NET SDK
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: '6.x'
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '6.x'
 
-    - name: Restore dependencies
-      run: dotnet restore HelloFunction/HelloFunction.csproj
+      - name: Restore dependencies
+        run: dotnet restore MyFunctionApp/MyFunctionApp.csproj
 
-    - name: Build
-      run: dotnet build HelloFunction/HelloFunction.csproj --configuration Release
+      - name: Build
+        run: dotnet build MyFunctionApp/MyFunctionApp.csproj --configuration Release
 
-    - name: Run tests
-      run: dotnet test HelloFunction.Tests/HelloFunction.Tests.csproj --configuration Release
+      - name: Run tests
+        run: dotnet test MyFunctionApp.Tests/MyFunctionApp.Tests.csproj --configuration Release
 
-    - name: Publish
-      run: dotnet publish HelloFunction/HelloFunction.csproj -c Release -o publish_output
+      - name: Publish
+        run: dotnet publish MyFunctionApp/MyFunctionApp.csproj -c Release -o publish_output
 
-    - name: Deploy to Azure Function App
-      uses: Azure/functions-action@v1
-      with:
-        app-name: my-azure-function-demo
-        package: publish_output
-        publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
+      - name: Deploy to Azure Function App
+        uses: Azure/functions-action@v1
+        with:
+          app-name: my-azure-function-demo
+          package: publish_output
+          publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
