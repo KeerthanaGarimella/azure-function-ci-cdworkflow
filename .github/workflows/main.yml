@@ -1,4 +1,7 @@
+# Trigger fix
 name: Azure Function CI/CD
+...
+
 
 on:
   push:
