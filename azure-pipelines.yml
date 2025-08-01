@@ -1,4 +1,3 @@
-
 trigger:
 - main
 
@@ -11,15 +10,15 @@ stages:
   jobs:
   - job: BuildJob
     pool:
-      vmImage: 'windows-latest'
+      name: default  # This uses your self-hosted agent
     steps:
     - task: UseDotNet@2
       inputs:
         packageType: 'sdk'
         version: '6.x'
     - script: |
-        dotnet restore
-        dotnet build --configuration $(buildConfiguration)
+        dotnet restore HelloFunction/HelloFunction.csproj
+        dotnet build HelloFunction/HelloFunction.csproj --configuration $(buildConfiguration)
       displayName: 'Build Function App'
 
 - stage: Test
@@ -28,10 +27,10 @@ stages:
   jobs:
   - job: TestJob
     pool:
-      vmImage: 'windows-latest'
+      name: default
     steps:
     - script: |
-        dotnet test --configuration $(buildConfiguration)
+        dotnet test HelloFunction.Tests/HelloFunction.Tests.csproj --configuration $(buildConfiguration)
       displayName: 'Run Unit Tests'
 
 - stage: Deploy
@@ -40,11 +39,11 @@ stages:
   jobs:
   - job: DeployJob
     pool:
-      vmImage: 'windows-latest'
+      name: default
     steps:
     - task: ArchiveFiles@2
       inputs:
-        rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
+        rootFolderOrFile: 'HelloFunction/bin/Release/net6.0'
         includeRootFolder: false
         archiveType: 'zip'
         archiveFile: '$(Build.ArtifactStagingDirectory)/functionapp.zip'
